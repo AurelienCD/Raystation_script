@@ -26,7 +26,7 @@ import csv
 
 from tkinter import *
 from tkinter import ttk
-from tkinter import messagebox
+from System.Windows.Forms import MessageBox
 from connect import *
 
 
@@ -2921,24 +2921,30 @@ PTVD2 = 0.5
 PTVD95 = 5
 PTVAverage = 444
 
-listToExport = [12, 5, 78, 97, 11, 1]
+listToExport = [12,5,78,97,11,1]
 
-savepath = "Q:/Aurelien_Dynalogs/Raystation_scripting/Raystation_Clinical_Goals.csv"
+savepath = "Z:/Aurelien_Dynalogs/Raystation_scripting/Raystation_Clinical_Goals.csv"
 filesave = csv.writer(open(savepath, 'w', encoding='Latin-1'))
 for elm in listToExport:
 	filesave.writerow(str(elm))
 filesave.close()
 
+with open(savepath, 'w') as csvfile:
+	filesave = csv.writer(csvfile)
+	for elm in listToExport:
+		filesave.writerow(str(elm))
 
 
-
-
-
+with open(savepath, 'w') as csvfile:
+	filesave = csv.writer(csvfile)
+	for elm in listToExport:
+		filesave.writerows(str(elm))
 
 
 def ExportToCSV(listToExport, tumourLocalisation):
 	savepath = "Q:/Aurelien_Dynalogs/Raystation_scripting/Raystation_Clinical_Goals.csv"
-	filesave = csv.writer(open(savepath, 'w', encoding='Latin-1'))
-	filesave.writerow(str(PTVD2) + "\n" + str(PTVD95) + "\n" + str(PTVAverage))
+	filesave = open(savepath, 'w', encoding='Latin-1')
+
+	filesave.csv.writer.writerow(str(PTVD2) + "\n" + str(PTVD95) + "\n" + str(PTVAverage))
 	filesave.close()
-	messagebox.showinfo('Clinical Goals Export completed')
+	MessageBox.Show('Clinical Goals Export completed')
