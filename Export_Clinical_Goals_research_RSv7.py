@@ -32,11 +32,35 @@ def Export_Clinical_Goals(goal):
 		clinicalGoal.append(round(goal.GetClinicalGoalValue()*100,2))
 		clinicalGoal.append('%')
 
+	elif goal.PlanningGoal.Type == 'AbsoluteVolumeAtDose':
+		if goal.PlanningGoal.GoalCriteria == 'AtMost':
+			clinicalGoal.append('At most {}cc at {}Gy'.format(round(goal.PlanningGoal.AcceptanceLevel,2), round(goal.PlanningGoal.ParameterValue,2) / 100))
+		elif goal.PlanningGoal.GoalCriteria == 'AtLeast':
+			clinicalGoal.append('At least {}cc at {}Gy'.format(round(goal.PlanningGoal.AcceptanceLevel,2), round(goal.PlanningGoal.ParameterValue,2) / 100))
+		clinicalGoal.append(round(goal.GetClinicalGoalValue(),2))
+		clinicalGoal.append('cc')
+
 	elif goal.PlanningGoal.Type == 'DoseAtVolume':
 		if goal.PlanningGoal.GoalCriteria == 'AtMost':
 			clinicalGoal.append('At most {}Gy at {}%'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100, round(goal.PlanningGoal.ParameterValue,2) * 100))
 		elif goal.PlanningGoal.GoalCriteria == 'AtLeast':
 			clinicalGoal.append('At least {}Gy at {}%'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100, round(goal.PlanningGoal.ParameterValue,2) * 100))
+		clinicalGoal.append(round(goal.GetClinicalGoalValue()/100,2))
+		clinicalGoal.append('Gy')
+
+	elif goal.PlanningGoal.Type == 'DoseAtAbsoluteVolume':
+		if goal.PlanningGoal.GoalCriteria == 'AtMost':
+			clinicalGoal.append('At most {}Gy at {}cc'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100, round(goal.PlanningGoal.ParameterValue,2)))
+		elif goal.PlanningGoal.GoalCriteria == 'AtLeast':
+			clinicalGoal.append('At least {}Gy at {}cc'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100, round(goal.PlanningGoal.ParameterValue,2)))
+		clinicalGoal.append(round(goal.GetClinicalGoalValue()/100,2))
+		clinicalGoal.append('Gy')
+
+	elif goal.PlanningGoal.Type == 'AverageDose':
+		if goal.PlanningGoal.GoalCriteria == 'AtMost':
+			clinicalGoal.append('At most {}Gy average dose'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100))
+		elif goal.PlanningGoal.GoalCriteria == 'AtLeast':
+			clinicalGoal.append('At least {}Gy average dose'.format(round(goal.PlanningGoal.AcceptanceLevel,2) / 100))
 		clinicalGoal.append(round(goal.GetClinicalGoalValue()/100,2))
 		clinicalGoal.append('Gy')
 	else:
