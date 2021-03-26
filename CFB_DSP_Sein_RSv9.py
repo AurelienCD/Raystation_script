@@ -4,7 +4,7 @@
 # Author : Aurélien Corroyer-Dulmont
 # Version : 08 march 2021
 
-# Update xx/xx/2020 : 
+# Update xx/xx/2021 : 
 
 
 from connect import *
@@ -22,40 +22,55 @@ locY = locPosition.y
 locZ = locPosition.z
 
 
-
 ### Creation of a plan/beamset/beam with zero CT coordinate
 case.CopyPlan(PlanName=Originalplan.Name, NewPlanName=r"DSP0")
 plan = case.TreatmentPlans["DSP0"]
-plan.BeamSets[0].Beams[0].Name = r"DSP0"
-plan.BeamSets[0].Beams[1].Name = r"DSPttt"
-plan.BeamSets[0].Beams[0].GantryAngle = 0
-plan.BeamSets[0].Beams[1].GantryAngle = 0
+
+### To get the selected beamset
+for elm in plan.BeamSets:
+	if elm.Comment == beam_set.Comment:
+		beamSetOfChoiceDSP0 = elm
+	else:
+		print("not that BeamSet")
+
+beamSetOfChoiceDSP0.Beams[0].Name = r"Beam1_DSP0"
+beamSetOfChoiceDSP0.Beams[1].Name = r"Beam2_DSP0"
+beamSetOfChoiceDSP0.Beams[0].GantryAngle = 0
+beamSetOfChoiceDSP0.Beams[1].GantryAngle = 0
 
 ## To change the isocenter position
-plan.BeamSets[0].Beams[0].Isocenter.EditIsocenter(Name=r"DSP0", Color="98, 184, 234", Position={ 'x': locX, 'y': locY, 'z': locZ })
+beamSetOfChoiceDSP0.Beams[0].Isocenter.EditIsocenter(Name=r"Beam1_DSP0", Color="98, 184, 234", Position={ 'x': locX, 'y': locY, 'z': locZ })
 
 ## To get the DSP of the DSP0 beam
-dsp_beamDSP0 = plan.BeamSets[0].Beams[0].GetSSD()
-
+dsp_beamDSP0 = beamSetOfChoiceDSP0.Beams[0].GetSSD()
 
 
 ### Creation of a plan/beamset/beam with zero CT coordinate (only for x)
 case.CopyPlan(PlanName=Originalplan.Name, NewPlanName=r"DSPttt")
 plan = case.TreatmentPlans["DSPttt"]
-plan.BeamSets[0].Beams[0].Name = r"DSP0"
-plan.BeamSets[0].Beams[1].Name = r"DSPttt"
-plan.BeamSets[0].Beams[0].GantryAngle = 0
-plan.BeamSets[0].Beams[1].GantryAngle = 0
+
+### To get the selected beamset
+for elm in plan.BeamSets:
+	if elm.Comment == beam_set.Comment:
+		beamSetOfChoiceDSPttt = elm
+	else:
+		print("not that BeamSet")
+
+
+beamSetOfChoiceDSPttt.Beams[0].Name = r"Beam1_DSPttt"
+beamSetOfChoiceDSPttt.Beams[1].Name = r"Beam2_DSPttt"
+beamSetOfChoiceDSPttt.Beams[0].GantryAngle = 0
+beamSetOfChoiceDSPttt.Beams[1].GantryAngle = 0
 
 ## To keep the y and z position which will not change
-LocY_beamDSPttt = plan.BeamSets[0].Beams[1].Isocenter.Position.y
-LocZ_beamDSPttt = plan.BeamSets[0].Beams[1].Isocenter.Position.z
+LocY_beamDSPttt = beamSetOfChoiceDSPttt.Beams[1].Isocenter.Position.y
+LocZ_beamDSPttt = beamSetOfChoiceDSPttt.Beams[1].Isocenter.Position.z
 
 ## To change the isocenter position
-plan.BeamSets[0].Beams[1].Isocenter.EditIsocenter(Name=r"DSPttt", Color="98, 184, 234", Position={ 'x': locX, 'y': LocY_beamDSPttt, 'z': LocZ_beamDSPttt })
+beamSetOfChoiceDSPttt.Beams[1].Isocenter.EditIsocenter(Name=r"Beam2_DSPttt", Color="98, 184, 234", Position={ 'x': locX, 'y': LocY_beamDSPttt, 'z': LocZ_beamDSPttt })
 
 ## To get the DSP of the DSPttt beam
-dsp_beamDSPttt = plan.BeamSets[0].Beams[1].GetSSD()
+dsp_beamDSPttt = beamSetOfChoiceDSPttt.Beams[1].GetSSD()
 
 
 
